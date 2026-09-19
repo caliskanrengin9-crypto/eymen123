@@ -1,24 +1,292 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-<title>Mafioso Anahtar Sistemi</title>
-</head>
-<body>
-<h1>Key Verification</h1>
-<input type="text" id="keyInput" placeholder="Enter Key">
-<button onclick="checkKey()">Verify</button>
-<div id="result"></div>
-<script>
-function checkKey() {
-var key = document.getElementById("keyInput").value;
-if (key === "yourpasswordhere") {
-document.getElementById("result").innerHTML = "Key Verified";
-} else {
-document.getElementById("result").innerHTML = "Invalid Key";
-}
-}
-</script>
-</body>
-</html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08080c">
+  <title>Lisans Doğrulama Paneli</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at top, #24243b 0%, transparent 35%),
+        #08080c;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 430px;
+    }
+
+    .panel {
+      padding: 32px 25px 22px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 24px;
+      background: rgba(18,18,25,.92);
+      box-shadow:
+        0 25px 70px rgba(0,0,0,.55),
+        inset 0 1px rgba(255,255,255,.04);
+      text-align: center;
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      box-shadow: 0 12px 35px rgba(99,70,230,.35);
+      font-size: 31px;
+      font-weight: 900;
+    }
+
+    h1 {
+      font-size: 25px;
+      margin-bottom: 8px;
+      letter-spacing: -.5px;
+    }
+
+    .subtitle {
+      color: #9696a5;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 27px;
+    }
+
+    .continue-btn {
+      width: 100%;
+      border: 0;
+      border-radius: 13px;
+      padding: 15px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s ease;
+      box-shadow: 0 9px 25px rgba(99,70,230,.22);
+    }
+
+    .continue-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    .continue-btn:active {
+      transform: scale(.98);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+      color: #626270;
+      font-size: 12px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: #292933;
+    }
+
+    .input-label {
+      display: block;
+      text-align: left;
+      color: #c7c7d2;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .code-input {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #2d2d38;
+      outline: none;
+      border-radius: 12px;
+      background: #0e0e14;
+      color: white;
+      text-align: center;
+      font-size: 16px;
+      letter-spacing: 2px;
+      transition: .2s;
+    }
+
+    .code-input:focus {
+      border-color: #6d5ce7;
+      box-shadow: 0 0 0 3px rgba(109,92,231,.12);
+    }
+
+    .verify-btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid #30303b;
+      border-radius: 12px;
+      background: #17171f;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .verify-btn:hover {
+      background: #20202a;
+    }
+
+    .message {
+      min-height: 22px;
+      margin-top: 14px;
+      font-size: 13px;
+    }
+
+    .success {
+      color: #6ee7a0;
+    }
+
+    .error {
+      color: #ff7777;
+    }
+
+    footer {
+      margin-top: 25px;
+      color: #5f5f6b;
+      font-size: 10px;
+      letter-spacing: .3px;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 14px;
+      }
+
+      .panel {
+        padding: 27px 19px 20px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+    <section class="panel">
+
+      <div class="logo">◆</div>
+
+      <h1>Üye Giriş Paneli</h1>
+
+      <p class="subtitle">
+        Devam etmek için kayıt işlemini tamamlayın
+        ve doğrulama kodunuzu girin.
+      </p>
+
+      <button class="continue-btn" onclick="continueAction()">
+        Devam Et / Kayıt Ol
+      </button>
+
+      <div class="divider">VEYA</div>
+
+      <label class="input-label" for="license">
+        Doğrulama Kodunuz
+      </label>
+
+      <input
+        id="license"
+        class="code-input"
+        type="text"
+        placeholder="KODUNUZU GİRİN"
+        autocomplete="off"
+        maxlength="40"
+      >
+
+      <button class="verify-btn" onclick="verifyCode()">
+        ✓ Onayla
+      </button>
+
+      <div id="message" class="message"></div>
+
+      <footer>
+        © 2026 • Tüm hakları saklıdır.
+      </footer>
+
+    </section>
+  </main>
+
+  <script>
+    /*
+      AYARLAR
+      ------------------------------------------------
+      Aşağıdaki bağlantıyı istediğin siteyle değiştir.
+    */
+
+    const CONTINUE_URL = "https://example.com";
+
+    /*
+      DEMO DOĞRULAMA KODU
+      ------------------------------------------------
+      Gerçek bir sistemde kodları JavaScript içinde
+      saklamak yerine sunucu tarafında doğrulamalısın.
+    */
+
+    const VALID_CODE = "DEMO-2026";
+
+    function continueAction() {
+      window.location.href = CONTINUE_URL;
+    }
+
+    function verifyCode() {
+      const input = document.getElementById("license");
+      const message = document.getElementById("message");
+
+      const code = input.value.trim();
+
+      message.className = "message";
+
+      if (!code) {
+        message.textContent = "Lütfen doğrulama kodunuzu girin.";
+        message.classList.add("error");
+        return;
+      }
+
+      if (code === VALID_CODE) {
+        message.textContent = "✓ Kod başarıyla doğrulandı!";
+        message.classList.add("success");
+      } else {
+        message.textContent = "✕ Geçersiz doğrulama kodu.";
+        message.classList.add("error");
+      }
+    }
+
+    document.getElementById("license").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        verifyCode();
+      }
+    });
+  </script>
+
+</body>
+        </html>
