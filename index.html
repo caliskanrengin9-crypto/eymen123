@@ -47,7 +47,6 @@ body {
     background: linear-gradient(135deg,#8b5cf6,#4f46e5);
     font-size: 30px;
     font-weight: bold;
-    box-shadow: 0 12px 35px rgba(99,70,230,.3);
 }
 
 h1 {
@@ -80,10 +79,6 @@ h1 {
     color: white;
     outline: none;
     font-size: 14px;
-}
-
-.input:focus {
-    border-color: #765de8;
 }
 
 .btn {
@@ -136,7 +131,6 @@ h1 {
 
 .task button:disabled {
     opacity: .5;
-    cursor: not-allowed;
 }
 
 .timer {
@@ -179,13 +173,6 @@ footer {
     color: #555561;
     font-size: 10px;
 }
-
-.notice {
-    color: #777784;
-    font-size: 10px;
-    margin-top: 13px;
-    line-height: 1.4;
-}
 </style>
 </head>
 
@@ -201,7 +188,6 @@ footer {
         Devam etmek için hesabını oluştur ve görevleri tamamla.
     </p>
 
-
     <!-- KAYIT -->
     <div id="registerScreen" class="screen active">
 
@@ -210,7 +196,6 @@ footer {
             class="input"
             type="text"
             placeholder="Kullanıcı adı"
-            autocomplete="off"
         >
 
         <input
@@ -218,7 +203,6 @@ footer {
             class="input"
             type="password"
             placeholder="Kendi şifreni belirle"
-            autocomplete="new-password"
         >
 
         <button class="btn" onclick="register()">
@@ -229,12 +213,11 @@ footer {
 
     </div>
 
-
     <!-- GÖREVLER -->
     <div id="tasksScreen" class="screen">
 
         <p class="subtitle">
-            Aşağıdaki 3 görevi sırayla tamamla.
+            3 görevi sırayla tamamla.
         </p>
 
         <div class="task">
@@ -250,7 +233,6 @@ footer {
             <div id="timer1" class="timer"></div>
         </div>
 
-
         <div class="task">
             <div class="task-title">Görev 2</div>
             <div class="task-text">
@@ -263,7 +245,6 @@ footer {
 
             <div id="timer2" class="timer"></div>
         </div>
-
 
         <div class="task">
             <div class="task-title">Görev 3</div>
@@ -278,7 +259,6 @@ footer {
             <div id="timer3" class="timer"></div>
         </div>
 
-
         <button
             id="continueBtn"
             class="btn"
@@ -290,7 +270,6 @@ footer {
 
     </div>
 
-
     <!-- KEY -->
     <div id="keyScreen" class="screen">
 
@@ -298,20 +277,13 @@ footer {
 
             <p>Görevler tamamlandı.</p>
 
-            <h2 style="margin-top:8px;">
-                Key Doğrulama
-            </h2>
-
-            <p style="margin-top:8px;">
-                Devam etmek için key'ini gir.
-            </p>
+            <h2>Key Doğrulama</h2>
 
             <input
                 id="keyInput"
                 class="input"
                 type="text"
                 placeholder="Key girin"
-                autocomplete="off"
             >
 
             <button class="btn" onclick="verifyKey()">
@@ -324,24 +296,15 @@ footer {
 
     </div>
 
-
     <!-- BAŞARILI -->
     <div id="successScreen" class="screen">
 
         <div class="key-box">
             <h2>✓ Doğrulandı</h2>
-
-            <p style="margin-top:10px;">
-                Key başarıyla doğrulandı.
-            </p>
-
-            <p class="notice">
-                Sistem tamamlandı.
-            </p>
+            <p>Key başarıyla doğrulandı.</p>
         </div>
 
     </div>
-
 
     <footer>
         © 2026 Mafioso • Tüm hakları saklıdır.
@@ -349,50 +312,29 @@ footer {
 
 </div>
 
-
 <script>
 
-/* =====================================================
-   AYARLAR
-   ===================================================== */
-
-/*
-   Her görev için açılacak siteyi buradan değiştir.
-*/
 const TASK_URLS = {
     1: "https://example.com",
     2: "https://example.com",
     3: "https://example.com"
 };
 
-/*
-   Görev başına bekleme süresi.
-*/
 const WAIT_TIME = 11;
 
-/*
-   Senin verdiğin key.
-*/
+/* SENİN KEY'İN */
 const VALID_KEY = "Free.Mafioso((()))/";
 
-
-/* =====================================================
-   EKRAN DEĞİŞTİRME
-   ===================================================== */
+let completedTasks = 0;
+let runningTasks = {};
 
 function showScreen(id) {
-
     document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
     });
 
     document.getElementById(id).classList.add("active");
 }
-
-
-/* =====================================================
-   KAYIT
-   ===================================================== */
 
 function register() {
 
@@ -408,28 +350,14 @@ function register() {
     message.className = "message";
 
     if (!username || !password) {
-
         message.textContent =
             "Kullanıcı adı ve şifreyi doldur.";
-
         message.classList.add("error");
-
-        return;
-    }
-
-    if (password.length < 4) {
-
-        message.textContent =
-            "Şifre en az 4 karakter olmalı.";
-
-        message.classList.add("error");
-
         return;
     }
 
     message.textContent =
         "Kayıt başarılı! Görevler açılıyor...";
-
     message.classList.add("success");
 
     setTimeout(() => {
@@ -437,23 +365,9 @@ function register() {
     }, 800);
 }
 
-
-/* =====================================================
-   GÖREV SİSTEMİ
-   ===================================================== */
-
-let completedTasks = 0;
-let runningTasks = {};
-
-
-/*
-   Görevi başlat.
-*/
 function startTask(taskNumber) {
 
-    if (runningTasks[taskNumber]) {
-        return;
-    }
+    if (runningTasks[taskNumber]) return;
 
     runningTasks[taskNumber] = true;
 
@@ -465,9 +379,6 @@ function startTask(taskNumber) {
 
     button.disabled = true;
 
-    /*
-       Siteyi yeni sekmede aç.
-    */
     window.open(
         TASK_URLS[taskNumber],
         "_blank"
@@ -501,54 +412,30 @@ function startTask(taskNumber) {
 
             completedTasks++;
 
-            /*
-               Sonraki görevi aç.
-            */
             if (taskNumber < 3) {
 
-                const nextButton =
-                    document.getElementById(
-                        "taskBtn" + (taskNumber + 1)
-                    );
-
-                nextButton.disabled = false;
-
+                document.getElementById(
+                    "taskBtn" + (taskNumber + 1)
+                ).disabled = false;
             }
 
-            /*
-               Üç görev de bittiyse Continue aç.
-            */
             if (completedTasks === 3) {
 
                 document.getElementById(
                     "continueBtn"
                 ).disabled = false;
-
             }
-
         }
 
     }, 1000);
 }
 
-
-/* =====================================================
-   CONTINUE
-   ===================================================== */
-
 function showKeyScreen() {
 
-    if (completedTasks < 3) {
-        return;
-    }
+    if (completedTasks < 3) return;
 
     showScreen("keyScreen");
 }
-
-
-/* =====================================================
-   KEY DOĞRULAMA
-   ===================================================== */
 
 function verifyKey() {
 
@@ -563,16 +450,6 @@ function verifyKey() {
 
     message.className = "message";
 
-    if (!enteredKey) {
-
-        message.textContent =
-            "Lütfen key gir.";
-
-        message.classList.add("error");
-
-        return;
-    }
-
     if (enteredKey === VALID_KEY) {
 
         message.textContent =
@@ -581,9 +458,7 @@ function verifyKey() {
         message.classList.add("success");
 
         setTimeout(() => {
-
             showScreen("successScreen");
-
         }, 800);
 
     } else {
@@ -592,12 +467,8 @@ function verifyKey() {
             "✕ Geçersiz key.";
 
         message.classList.add("error");
-
     }
 }
-
-
-/* Enter ile key gönderme */
 
 document.getElementById("keyInput")
 .addEventListener("keydown", function(event) {
@@ -611,4 +482,4 @@ document.getElementById("keyInput")
 </script>
 
 </body>
-</html> 
+</html>
