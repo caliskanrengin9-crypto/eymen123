@@ -1,292 +1,614 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#08080c">
-  <title>Lisans Doğrulama Paneli</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mafioso Key System</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background:
-        radial-gradient(circle at top, #24243b 0%, transparent 35%),
-        #08080c;
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, #29203d 0%, transparent 40%),
+        #07070b;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 18px;
+}
 
-    .container {
-      width: 100%;
-      max-width: 430px;
-    }
+.panel {
+    width: 100%;
+    max-width: 430px;
+    background: rgba(17,17,24,.96);
+    border: 1px solid #292934;
+    border-radius: 24px;
+    padding: 30px 22px;
+    box-shadow: 0 25px 70px rgba(0,0,0,.55);
+    text-align: center;
+}
 
-    .panel {
-      padding: 32px 25px 22px;
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 24px;
-      background: rgba(18,18,25,.92);
-      box-shadow:
-        0 25px 70px rgba(0,0,0,.55),
-        inset 0 1px rgba(255,255,255,.04);
-      text-align: center;
-    }
+.logo {
+    width: 70px;
+    height: 70px;
+    margin: auto;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg,#8b5cf6,#4f46e5);
+    font-size: 30px;
+    font-weight: bold;
+    box-shadow: 0 12px 35px rgba(99,70,230,.3);
+}
 
-    .logo {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 17px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      box-shadow: 0 12px 35px rgba(99,70,230,.35);
-      font-size: 31px;
-      font-weight: 900;
-    }
+h1 {
+    margin-top: 17px;
+    font-size: 25px;
+}
 
-    h1 {
-      font-size: 25px;
-      margin-bottom: 8px;
-      letter-spacing: -.5px;
-    }
+.subtitle {
+    color: #9999a8;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 9px 0 25px;
+}
 
-    .subtitle {
-      color: #9696a5;
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 27px;
-    }
+.screen {
+    display: none;
+}
 
-    .continue-btn {
-      width: 100%;
-      border: 0;
-      border-radius: 13px;
-      padding: 15px;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      color: white;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: .2s ease;
-      box-shadow: 0 9px 25px rgba(99,70,230,.22);
-    }
+.screen.active {
+    display: block;
+}
 
-    .continue-btn:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.1);
-    }
+.input {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border: 1px solid #30303b;
+    border-radius: 12px;
+    background: #0d0d13;
+    color: white;
+    outline: none;
+    font-size: 14px;
+}
 
-    .continue-btn:active {
-      transform: scale(.98);
-    }
+.input:focus {
+    border-color: #765de8;
+}
 
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 24px 0;
-      color: #626270;
-      font-size: 12px;
-    }
+.btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    background: linear-gradient(135deg,#7c3aed,#4f46e5);
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    .divider::before,
-    .divider::after {
-      content: "";
-      height: 1px;
-      flex: 1;
-      background: #292933;
-    }
+.btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
 
-    .input-label {
-      display: block;
-      text-align: left;
-      color: #c7c7d2;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
+.task {
+    text-align: left;
+    background: #101018;
+    border: 1px solid #292934;
+    border-radius: 15px;
+    padding: 16px;
+    margin-top: 12px;
+}
 
-    .code-input {
-      width: 100%;
-      padding: 15px;
-      border: 1px solid #2d2d38;
-      outline: none;
-      border-radius: 12px;
-      background: #0e0e14;
-      color: white;
-      text-align: center;
-      font-size: 16px;
-      letter-spacing: 2px;
-      transition: .2s;
-    }
+.task-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
 
-    .code-input:focus {
-      border-color: #6d5ce7;
-      box-shadow: 0 0 0 3px rgba(109,92,231,.12);
-    }
+.task-text {
+    color: #8f8f9e;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
 
-    .verify-btn {
-      width: 100%;
-      margin-top: 12px;
-      padding: 14px;
-      border: 1px solid #30303b;
-      border-radius: 12px;
-      background: #17171f;
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-      transition: .2s;
-    }
+.task button {
+    width: 100%;
+    padding: 11px;
+    border: 0;
+    border-radius: 9px;
+    background: #20202b;
+    color: white;
+    cursor: pointer;
+}
 
-    .verify-btn:hover {
-      background: #20202a;
-    }
+.task button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
 
-    .message {
-      min-height: 22px;
-      margin-top: 14px;
-      font-size: 13px;
-    }
+.timer {
+    color: #a78bfa;
+    font-size: 12px;
+    margin-top: 8px;
+    min-height: 15px;
+}
 
-    .success {
-      color: #6ee7a0;
-    }
+.message {
+    min-height: 20px;
+    margin-top: 12px;
+    font-size: 13px;
+}
 
-    .error {
-      color: #ff7777;
-    }
+.success {
+    color: #65e6a0;
+}
 
-    footer {
-      margin-top: 25px;
-      color: #5f5f6b;
-      font-size: 10px;
-      letter-spacing: .3px;
-    }
+.error {
+    color: #ff7373;
+}
 
-    @media (max-width: 480px) {
-      body {
-        padding: 14px;
-      }
+.key-box {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 15px;
+    background: #101018;
+    border: 1px solid #292934;
+}
 
-      .panel {
-        padding: 27px 19px 20px;
-      }
+.key-box p {
+    color: #9999a8;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
 
-      h1 {
-        font-size: 23px;
-      }
-    }
-  </style>
+footer {
+    margin-top: 25px;
+    color: #555561;
+    font-size: 10px;
+}
+
+.notice {
+    color: #777784;
+    font-size: 10px;
+    margin-top: 13px;
+    line-height: 1.4;
+}
+</style>
 </head>
 
 <body>
 
-  <main class="container">
-    <section class="panel">
+<div class="panel">
 
-      <div class="logo">◆</div>
+    <div class="logo">M</div>
 
-      <h1>Üye Giriş Paneli</h1>
+    <h1>Mafioso Key System</h1>
 
-      <p class="subtitle">
-        Devam etmek için kayıt işlemini tamamlayın
-        ve doğrulama kodunuzu girin.
-      </p>
+    <p class="subtitle">
+        Devam etmek için hesabını oluştur ve görevleri tamamla.
+    </p>
 
-      <button class="continue-btn" onclick="continueAction()">
-        Devam Et / Kayıt Ol
-      </button>
 
-      <div class="divider">VEYA</div>
+    <!-- KAYIT -->
+    <div id="registerScreen" class="screen active">
 
-      <label class="input-label" for="license">
-        Doğrulama Kodunuz
-      </label>
+        <input
+            id="username"
+            class="input"
+            type="text"
+            placeholder="Kullanıcı adı"
+            autocomplete="off"
+        >
 
-      <input
-        id="license"
-        class="code-input"
-        type="text"
-        placeholder="KODUNUZU GİRİN"
-        autocomplete="off"
-        maxlength="40"
-      >
+        <input
+            id="password"
+            class="input"
+            type="password"
+            placeholder="Kendi şifreni belirle"
+            autocomplete="new-password"
+        >
 
-      <button class="verify-btn" onclick="verifyCode()">
-        ✓ Onayla
-      </button>
+        <button class="btn" onclick="register()">
+            Kayıt Ol
+        </button>
 
-      <div id="message" class="message"></div>
+        <div id="registerMessage" class="message"></div>
 
-      <footer>
-        © 2026 • Tüm hakları saklıdır.
-      </footer>
+    </div>
 
-    </section>
-  </main>
 
-  <script>
-    /*
-      AYARLAR
-      ------------------------------------------------
-      Aşağıdaki bağlantıyı istediğin siteyle değiştir.
-    */
+    <!-- GÖREVLER -->
+    <div id="tasksScreen" class="screen">
 
-    const CONTINUE_URL = "https://example.com";
+        <p class="subtitle">
+            Aşağıdaki 3 görevi sırayla tamamla.
+        </p>
 
-    /*
-      DEMO DOĞRULAMA KODU
-      ------------------------------------------------
-      Gerçek bir sistemde kodları JavaScript içinde
-      saklamak yerine sunucu tarafında doğrulamalısın.
-    */
+        <div class="task">
+            <div class="task-title">Görev 1</div>
+            <div class="task-text">
+                Siteyi aç ve 11 saniye bekle.
+            </div>
 
-    const VALID_CODE = "DEMO-2026";
+            <button id="taskBtn1" onclick="startTask(1)">
+                Siteye Git
+            </button>
 
-    function continueAction() {
-      window.location.href = CONTINUE_URL;
-    }
+            <div id="timer1" class="timer"></div>
+        </div>
 
-    function verifyCode() {
-      const input = document.getElementById("license");
-      const message = document.getElementById("message");
 
-      const code = input.value.trim();
+        <div class="task">
+            <div class="task-title">Görev 2</div>
+            <div class="task-text">
+                Siteyi aç ve 11 saniye bekle.
+            </div>
 
-      message.className = "message";
+            <button id="taskBtn2" onclick="startTask(2)" disabled>
+                Siteye Git
+            </button>
 
-      if (!code) {
-        message.textContent = "Lütfen doğrulama kodunuzu girin.";
-        message.classList.add("error");
-        return;
-      }
+            <div id="timer2" class="timer"></div>
+        </div>
 
-      if (code === VALID_CODE) {
-        message.textContent = "✓ Kod başarıyla doğrulandı!";
-        message.classList.add("success");
-      } else {
-        message.textContent = "✕ Geçersiz doğrulama kodu.";
-        message.classList.add("error");
-      }
-    }
 
-    document.getElementById("license").addEventListener("keydown", function(event) {
-      if (event.key === "Enter") {
-        verifyCode();
-      }
+        <div class="task">
+            <div class="task-title">Görev 3</div>
+            <div class="task-text">
+                Siteyi aç ve 11 saniye bekle.
+            </div>
+
+            <button id="taskBtn3" onclick="startTask(3)" disabled>
+                Siteye Git
+            </button>
+
+            <div id="timer3" class="timer"></div>
+        </div>
+
+
+        <button
+            id="continueBtn"
+            class="btn"
+            onclick="showKeyScreen()"
+            disabled
+        >
+            Continue
+        </button>
+
+    </div>
+
+
+    <!-- KEY -->
+    <div id="keyScreen" class="screen">
+
+        <div class="key-box">
+
+            <p>Görevler tamamlandı.</p>
+
+            <h2 style="margin-top:8px;">
+                Key Doğrulama
+            </h2>
+
+            <p style="margin-top:8px;">
+                Devam etmek için key'ini gir.
+            </p>
+
+            <input
+                id="keyInput"
+                class="input"
+                type="text"
+                placeholder="Key girin"
+                autocomplete="off"
+            >
+
+            <button class="btn" onclick="verifyKey()">
+                Key'i Onayla
+            </button>
+
+            <div id="keyMessage" class="message"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BAŞARILI -->
+    <div id="successScreen" class="screen">
+
+        <div class="key-box">
+            <h2>✓ Doğrulandı</h2>
+
+            <p style="margin-top:10px;">
+                Key başarıyla doğrulandı.
+            </p>
+
+            <p class="notice">
+                Sistem tamamlandı.
+            </p>
+        </div>
+
+    </div>
+
+
+    <footer>
+        © 2026 Mafioso • Tüm hakları saklıdır.
+    </footer>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   AYARLAR
+   ===================================================== */
+
+/*
+   Her görev için açılacak siteyi buradan değiştir.
+*/
+const TASK_URLS = {
+    1: "https://example.com",
+    2: "https://example.com",
+    3: "https://example.com"
+};
+
+/*
+   Görev başına bekleme süresi.
+*/
+const WAIT_TIME = 11;
+
+/*
+   Senin verdiğin key.
+*/
+const VALID_KEY = "Free.Mafioso((()))/";
+
+
+/* =====================================================
+   EKRAN DEĞİŞTİRME
+   ===================================================== */
+
+function showScreen(id) {
+
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
     });
-  </script>
+
+    document.getElementById(id).classList.add("active");
+}
+
+
+/* =====================================================
+   KAYIT
+   ===================================================== */
+
+function register() {
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const message =
+        document.getElementById("registerMessage");
+
+    message.className = "message";
+
+    if (!username || !password) {
+
+        message.textContent =
+            "Kullanıcı adı ve şifreyi doldur.";
+
+        message.classList.add("error");
+
+        return;
+    }
+
+    if (password.length < 4) {
+
+        message.textContent =
+            "Şifre en az 4 karakter olmalı.";
+
+        message.classList.add("error");
+
+        return;
+    }
+
+    message.textContent =
+        "Kayıt başarılı! Görevler açılıyor...";
+
+    message.classList.add("success");
+
+    setTimeout(() => {
+        showScreen("tasksScreen");
+    }, 800);
+}
+
+
+/* =====================================================
+   GÖREV SİSTEMİ
+   ===================================================== */
+
+let completedTasks = 0;
+let runningTasks = {};
+
+
+/*
+   Görevi başlat.
+*/
+function startTask(taskNumber) {
+
+    if (runningTasks[taskNumber]) {
+        return;
+    }
+
+    runningTasks[taskNumber] = true;
+
+    const button =
+        document.getElementById("taskBtn" + taskNumber);
+
+    const timer =
+        document.getElementById("timer" + taskNumber);
+
+    button.disabled = true;
+
+    /*
+       Siteyi yeni sekmede aç.
+    */
+    window.open(
+        TASK_URLS[taskNumber],
+        "_blank"
+    );
+
+    let remaining = WAIT_TIME;
+
+    timer.textContent =
+        "Bekleniyor: " + remaining + " saniye";
+
+    const interval = setInterval(() => {
+
+        remaining--;
+
+        if (remaining > 0) {
+
+            timer.textContent =
+                "Bekleniyor: " +
+                remaining +
+                " saniye";
+
+        } else {
+
+            clearInterval(interval);
+
+            timer.textContent =
+                "✓ Görev tamamlandı";
+
+            button.textContent =
+                "✓ Tamamlandı";
+
+            completedTasks++;
+
+            /*
+               Sonraki görevi aç.
+            */
+            if (taskNumber < 3) {
+
+                const nextButton =
+                    document.getElementById(
+                        "taskBtn" + (taskNumber + 1)
+                    );
+
+                nextButton.disabled = false;
+
+            }
+
+            /*
+               Üç görev de bittiyse Continue aç.
+            */
+            if (completedTasks === 3) {
+
+                document.getElementById(
+                    "continueBtn"
+                ).disabled = false;
+
+            }
+
+        }
+
+    }, 1000);
+}
+
+
+/* =====================================================
+   CONTINUE
+   ===================================================== */
+
+function showKeyScreen() {
+
+    if (completedTasks < 3) {
+        return;
+    }
+
+    showScreen("keyScreen");
+}
+
+
+/* =====================================================
+   KEY DOĞRULAMA
+   ===================================================== */
+
+function verifyKey() {
+
+    const input =
+        document.getElementById("keyInput");
+
+    const message =
+        document.getElementById("keyMessage");
+
+    const enteredKey =
+        input.value.trim();
+
+    message.className = "message";
+
+    if (!enteredKey) {
+
+        message.textContent =
+            "Lütfen key gir.";
+
+        message.classList.add("error");
+
+        return;
+    }
+
+    if (enteredKey === VALID_KEY) {
+
+        message.textContent =
+            "✓ Key doğru!";
+
+        message.classList.add("success");
+
+        setTimeout(() => {
+
+            showScreen("successScreen");
+
+        }, 800);
+
+    } else {
+
+        message.textContent =
+            "✕ Geçersiz key.";
+
+        message.classList.add("error");
+
+    }
+}
+
+
+/* Enter ile key gönderme */
+
+document.getElementById("keyInput")
+.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+        verifyKey();
+    }
+
+});
+
+</script>
 
 </body>
-        </html>
+</html> 
